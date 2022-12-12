@@ -17,7 +17,13 @@ for each in assignments:
     start_second_range = int(second_assignment.split("-")[0])
     end_second_range = int(second_assignment.split("-")[1])
     
-    if ((start_first_range <= start_second_range) and (end_first_range >= end_second_range)) or ((start_second_range <= start_first_range) and (end_second_range >= end_first_range)):
+    # if ((start_first_range <= start_second_range) and (end_first_range >= end_second_range)) or ((start_second_range <= start_first_range) and (end_second_range >= end_first_range)):
+        # overlaps += 1
+
+
+    # Part Two
+
+    if (start_first_range <= end_second_range) and (start_second_range <= end_first_range):
         overlaps += 1
 
     # print(start_first_range)

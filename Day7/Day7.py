@@ -9,7 +9,7 @@ level = 0
 files = {}
 
 
-#Create JSON objects with level, file size, parent and children directories. 
+#Create JSON objects with level, file size, parent and children directories.    
 
 def strip_the_commands(commands):
     for i in range(0, len(commands), 1):

@@ -1,61 +1,66 @@
-# /usr/bin/env /bin/python3 /home/michaelgarvie/.vscode/extensions/ms-python.python-2022.8.1/pythonFiles/lib/python/debugpy/launcher 42419 -- /home/michaelgarvie/Documents/Work_Documentation/AdventOfCode2022/Day1/Day1.py
 import pprint as pp
-import numpy as np
+# import numpy as np
 text_file = open("Day5/Day5_diagram.txt")
 crates = text_file.readlines()
 
-crates.pop()
-crates_length = len(crates)
-box_stacks = 0
-box_max_length = 0
-# stacks = 3
-stacks = 9
-box_max_length = (stacks * 4) - 1
+rules_file = open("Day5/Day5.txt")
+rules = rules_file.readlines()
+
+import re
+## re.match or re.findall <--- looks for multiple matches for the pattern across the same line
+stack = [re.findall('([A-Z]|\s{3})\s?', x.strip('[]')) for x in crates]
+transposed = [[row[i] if len(row[i]) == 1 else '' for row in stack] for i in range(len(stack[0]))]
+transposed = [list(reversed(row)) for row in transposed]
+transposed = [[x for x in row if len(x) > 0] for row in transposed]
+
+print("\n")
+pp.pprint(transposed)
+
+destination = []
+pr = []
+for each in rules:
+    parsed_rules = re.match("move (\d+) from (\d+) to (\d+)", each)
+
+    # print(parsed_rules[1])
+    # print(parsed_rules[2])
+    # print(parsed_rules[3])
+
+    pr.append(list(map(int, re.findall('(\d+)', each))))
+    # print(pr)
+
+for rule in pr:
+    for i in range(0, rule[0]):
+        temp_stack = transposed[rule[1]-1].pop()
+        transposed[rule[2]-1].append(temp_stack)
 
 
-for i in range(0, crates_length, 1):
-    crates[i] = crates[i].strip("\n")
+        print(transposed)
+    print(each)
 
-actual_total_boxes = box_max_length//4
+    # crate = transposed.pop()
+    # destination.append(crate)
+    # count = 5
+    # index = len(transposed[1]) - count
+    # crate = transposed.pop(index) #<--- here it will pop not from the end, but from a fixed index from the bottom.
 
-stacked_boxes = np.empty((stacks,actual_total_boxes), dtype=object)
-clean_stacks = np.empty((stacks,actual_total_boxes), dtype=str)
-letter_count = 0
-number_count = 0
-array_count = 0
-for each in reversed(crates):
-    while letter_count < box_max_length:
-        if each[1+letter_count] != " ":
-            stacked_boxes[array_count][number_count] = each[1+letter_count]
-        # if each[5] != " ":
-        #     stacked_boxes[1][letter_count] = each[5]
-        # if each[9] != " ":
-        #     stacked_boxes[2][letter_count] = each[9]
-        letter_count += 4
-        array_count +=1
-        # number_count += 1
-    array_count = 0
-    number_count += 1
-    letter_count = 0
+final_answer = ''
+for each in transposed:
+    final_answer = final_answer + each[-1]
 
-# pp.pprint(stacked_boxes)
+print(final_answer)
 
 
-for i in range(0, len(stacked_boxes), 1):
-    for k in range(0, len(stacked_boxes[i]), 1):
-        if stacked_boxes[i][k] != None:
-            clean_stacks[i][k] = stacked_boxes[i][k]
 
-# for i in range(0, len(clean_stacks), 1):
-#     for k in range(0, len(clean_stacks[i]), 1):
-#         if stacked_boxes[i][k] == '':
-#             np.delete(clean_stacks[i][k])
-    
-# clean_stacks = np.deslete(stacked_boxes, np.where(stacked_boxes == None))
 
-# pp.pprint(stacked_boxes)
-pp.pprint(clean_stacks)
 
-# print(crates)
-# print(box_stacks)
-# print(box_max_length)
+# a = [1, 2, 3, 4, 5, 6, 7]
+# b = a.pop()
+# assert b == 7
+# c = a.pop(0)
+# assert c == 1
+# d = a.pop(-1)
+# assert d == 6
+# e = a.pop(2)
+# assert e == 4
+
+# pp.pprint(transposed)

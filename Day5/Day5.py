@@ -18,24 +18,30 @@ pp.pprint(transposed)
 
 destination = []
 pr = []
+temp_stack = []
 for each in rules:
     parsed_rules = re.match("move (\d+) from (\d+) to (\d+)", each)
 
-    # print(parsed_rules[1])
-    # print(parsed_rules[2])
-    # print(parsed_rules[3])
-
     pr.append(list(map(int, re.findall('(\d+)', each))))
-    # print(pr)
+    
+# Part 1
+# for rule in pr:
+#     for i in range(0, rule[0]):
+#         temp_stack = transposed[rule[1]-1].pop()
+#         transposed[rule[2]-1].append(temp_stack)
 
+
+#         print(transposed)
+#     print(each)
+#Part 2
 for rule in pr:
+    print(rule)
     for i in range(0, rule[0]):
-        temp_stack = transposed[rule[1]-1].pop()
-        transposed[rule[2]-1].append(temp_stack)
-
-
-        print(transposed)
-    print(each)
+        temp_stack.append(transposed[rule[1]-1].pop())
+    for i in range(0, rule[0]):
+        transposed[rule[2]-1].append(temp_stack.pop())
+        # print(transposed)
+    
 
     # crate = transposed.pop()
     # destination.append(crate)
